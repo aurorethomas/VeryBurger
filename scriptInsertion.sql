@@ -26,6 +26,7 @@ VALUES (5, 'potatoes');
 
 --IngredientRecipe
 
+<<<<<<< HEAD
 -- Uniquement  pour l'hamburger1
 INSERT INTO INGREDIENTRECIPE
 VALUES (1,1,2);
@@ -36,14 +37,26 @@ VALUES (3,1,0.1);
 INSERT INTO INGREDIENTRECIPE
 VALUES (4,1,2);
 
+=======
+>>>>>>> origin/master
 --Menu
 
 INSERT INTO MENU (id_menu,name_menu)
 VALUES (0,'Le starter');
+<<<<<<< HEAD
 INSERT INTO MENU (id_menu,name_menu)
 VALUES (1,'Le burger');
 INSERT INTO MENU (id_menu,name_menu)
 VALUES (2,'La frite');
+=======
+
+INSERT INTO MENU (id_menu,name_menu)
+VALUES (1,'Le burger');
+
+INSERT INTO MENU (id_menu,name_menu)
+VALUES (2,'La frite');
+
+>>>>>>> origin/master
 
 
 
