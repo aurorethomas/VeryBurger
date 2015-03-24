@@ -25,6 +25,9 @@ INSERT INTO RECIPE
 VALUES (5, 'potatoes');
 
 --IngredientRecipe
+-- des frites 
+INSERT INTO INGREDIENT RECIPE
+VALUES(5,4,0.4);
 
 <<<<<<< HEAD
 -- Uniquement  pour l'hamburger1

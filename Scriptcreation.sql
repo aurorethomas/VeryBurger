@@ -48,6 +48,7 @@ CREATE TABLE PURCHASE
 	purchasePrice INTEGER,
 	available CHAR(1),
 	id_ingredient INTEGER,
+	quantite_ingredient INTEGER,
 	expireDate DATE,
 	CONSTRAINT PK_PURCHASE PRIMARY KEY (id_purchase,id_ingredient),
 	CONSTRAINT FK_id_ingredient_PURCHASE FOREIGN KEY(id_ingredient) REFERENCES INGREDIENT(id_ingredient),
