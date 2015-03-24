@@ -26,6 +26,17 @@ VALUES (5, 'potatoes');
 
 --IngredientRecipe
 
+--Menu
+
+INSERT INTO MENU (id_menu,name_menu)
+VALUES (0,'Le starter');
+
+INSERT INTO MENU (id_menu,name_menu)
+VALUES (1,'Le burger');
+
+INSERT INTO MENU (id_menu,name_menu)
+VALUES (2,'La frite');
+
 
 
 
