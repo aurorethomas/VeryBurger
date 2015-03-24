@@ -26,6 +26,24 @@ VALUES (5, 'potatoes');
 
 --IngredientRecipe
 
+-- Uniquement  pour l'hamburger1
+INSERT INTO INGREDIENTRECIPE
+VALUES (1,1,2);
+INSERT INTO INGREDIENTRECIPE
+VALUES (2,1,1);
+INSERT INTO INGREDIENTRECIPE
+VALUES (3,1,0.1);
+INSERT INTO INGREDIENTRECIPE
+VALUES (4,1,2);
+
+--Menu
+
+INSERT INTO MENU (id_menu,name_menu)
+VALUES (0,'Le starter');
+INSERT INTO MENU (id_menu,name_menu)
+VALUES (1,'Le burger');
+INSERT INTO MENU (id_menu,name_menu)
+VALUES (2,'La frite');
 
 
 
