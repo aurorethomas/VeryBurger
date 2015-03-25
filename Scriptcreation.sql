@@ -13,14 +13,11 @@ CREATE TABLE MENU
 (
 	id_menu INTEGER,
 	name_menu VARCHAR(30),
-	CONSTRAINT PK_MENU PRIMARY KEY (id_menu)
-	
-	
-	
+	CONSTRAINT PK_MENU PRIMARY KEY (id_menu)	
 );
 
 
-CREATE TABLE ORDERS
+CREATE TABLE ORDERS -- Ch: c'est bien la table qui enregistre les commandes ? je ne comprends pas trop les attributs du coup... pour moi dans cette table il faut l'ID du vendeur, la date/heure de commande, la date/heure de "livraison"
 (
 	id_orders INTEGER,
 	id_menu INTEGER,
@@ -29,7 +26,7 @@ CREATE TABLE ORDERS
 	CONSTRAINT FK_ORDERS_id_menu FOREIGN KEY (id_menu) REFERENCES MENU(id_menu)
 );
 
-CREATE TABLE USERS
+CREATE TABLE USERS -- à voir comment faire le lien avec les users d'Oracle. je ne comprends pas du tout la FK par contre...
 (
 	id_user INTEGER,
 	Firstname_user VARCHAR(30),
@@ -96,3 +93,5 @@ CREATE TABLE POSITION
 	CONSTRAINT PK_POSITION PRIMARY KEY (id_position),
 	CONSTRAINT FK_POSITION_id_user FOREIGN KEY (id_user) REFERENCES USERS(id_user)
 );
+
+-- Il manque la table ligneCommande (une ligne = un menu pour chaque commande)
