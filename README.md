@@ -17,7 +17,7 @@ Choses à faire:
 Triggers
 - Avertissement lorsque les stocks sont insufisants ou que des ingrédients viennent à manquer 
 (Radu a déjà commencé quelque chose là dessus)
--Nombre de commande effectué par tel ou tel employé 
+-Nombre de commandes/sandwichs effectuées par tel ou tel employé 
 
 Fonctions/Procedures:
 -Un fonction calculant le prix final de la commande
@@ -30,7 +30,7 @@ Fonctions/Procedures:
 Vues:
 -La carte pure et simple avec les prix des plats à l'unité et des menus.
 -Affichage des détails d'un menu
--Liste des employés
+-Liste des employés 														aurore
 
 
 
