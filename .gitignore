@@ -1,0 +1,11 @@
+bin
+*.log
+.DS_STORE
+.tmp
+*.seed
+*.out
+*.pid
+.settings
+.project
+build.*
+.classpath
