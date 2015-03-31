@@ -11,6 +11,10 @@ INSERT INTO INGREDIENT
 VALUES (5, 'pomme de terre', 'kilo');
 INSERT INTO INGREDIENT
 VALUES (6, 'poulet', 'kilo');
+INSERT INTO INGREDIENT
+VALUES (10, 'pain', 'unite');
+INSERT INTO INGREDIENT
+VALUES (10, 'frite', 'kilo');
 
 -- Recipe
 INSERT INTO RECIPE
