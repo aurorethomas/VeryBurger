@@ -1,4 +1,4 @@
---Alerte pour moins de 10 unités  et pour 0 unités pour toutes les produits après le update dans la table PURCHASEalert
+--Alerte pour moins de 10 unités  et pour 0 unités pour tous les produits après le update dans la table PURCHASEalert
 create or replace trigger monDeclancheur 
 	before update on purchase FOR EACH ROW
 declare  toto integer;
