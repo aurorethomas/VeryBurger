@@ -30,7 +30,7 @@ Fonctions/Procedures:
 Vues:
 -La carte pure et simple avec les prix des plats à l'unité et des menus.
 -Affichage des détails d'un menu
--Liste des employés 														aurore
+-Liste des employés 													
 
 
 
