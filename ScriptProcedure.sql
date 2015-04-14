@@ -41,16 +41,12 @@ END;
 /
 
 
--- This function calcul the total price for an order
-CREATE OR REPLACE FUNCTION facture (numCommande NUMBER)
-RETURN NUMBER IS
-	prixTotal NUMBER(5) := 0 ;
+-- Update the stock for one specific ingredient
+CREATE OR REPLACE PROCEDURE reapprovisionnement (numIngredient NUMBER, qteIngredient NUMBER) IS
 BEGIN
-	SELECT (SUM(unit_price) +SUM(price_menu)) INTO prixTotal
-	FROM menu NATURAL JOIN menuOrder NATURAL JOIN recipeOrder NATURAL JOIN recipe
-	WHERE id_order=numCommande;
-	RETURN prixTotal;
+	UPDATE purchase
+	SET quantite_ingredient = quantite_ingredient + qteIngredient
+	WHERE id_ingredient = numIngredient;
 END;
-/
 
 
