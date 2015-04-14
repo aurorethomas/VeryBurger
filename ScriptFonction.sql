@@ -1,13 +1,17 @@
 -- FUNCTIONS
 
--- This function calcul the total price for an order
+--- This function calcul the total price for an order
 CREATE OR REPLACE FUNCTION facture (numCommande NUMBER)
 RETURN NUMBER IS
-	prixTotal NUMBER(5) := 0 ;
+	recipePrice NUMBER(5);
+	menuPrice NUMBER(5);
 BEGIN
-	SELECT (SUM(unit_price) +SUM(price_menu)) INTO prixTotal
-	FROM menu NATURAL JOIN menuOrder NATURAL JOIN recipeOrder NATURAL JOIN recipe
+	SELECT (SUM(unit_price*qte)) INTO recipePrice
+	FROM recipeOrder 
 	WHERE id_order=numCommande;
-	RETURN prixTotal;
+	SELECT SUM(price_menu) INTO menuPrice
+	FROM menuOrder NATURAL JOIN menu
+	WHERE id_order=numCommande;
+	RETURN menuPrice + recipePrice;
 END;
 /
