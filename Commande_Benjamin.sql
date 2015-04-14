@@ -17,6 +17,8 @@ CREATE SEQUENCE seq_menuorder;
 -- la variable utilisateur désigne l'id_user de la personne
 -- utilisant la machine 
 
+
+--PASSE AU COMPILATEUR, NON TESTEE AVEC DES DONNEES
 CREATE PROCEDURE new_order (utilisateur NUMBER) IS
 BEGIN
 	INSERT INTO ORDERS(id_order,id_user)
@@ -28,7 +30,9 @@ END;
 
 --On ajoute plat par plat
 
-CREATE PROCEDURE ajout_recette_order (nb NUMBER,plat NUMBER)
+--PASSE AU COMPILATEUR, NON TESTEE AVEC DES DONNEES
+
+CREATE OR REPLACE PROCEDURE ajout_recette_order (nb NUMBER,plat NUMBER)IS
 prix NUMBER;
 BEGIN
 	SELECT price INTO prix 
@@ -38,10 +42,10 @@ BEGIN
 	INSERT INTO RECIPEORDER(id_order,id_recipe,qte,unit_price)
 	VALUES(seq_commande.CURRVAL,plat,nb,prix*nb);
 END;
-
 --Ajout d'un menu
 
-CREATE PROCEDURE ajout_menu_order (menu NUMBER)
+CREATE OR REPLACE PROCEDURE ajout_menu_order (menu NUMBER) IS
+id NUMBER;
 BEGIN
 	INSERT INTO MENUORDER (id_menu_order,id_order,id_menu)
 	VALUES(seq_menuorder.NEXTVAL,seq_commande.CURRVAL,menu);
@@ -49,14 +53,14 @@ BEGIN
 	INSERT INTO RECIPEORDER(id_order,id_menu_order)
 	VALUES (seq_commande.CURRVAL,seq_menuorder.CURRVAL);
 	
-	FOR variableBoucle IN [REVERSE] borneInf .. borneSup
+	FOR id	IN (SELECT COUNT id_recipe FROM RECIPE WHERE )
 	LOOP
 		instructions;
 	END LOOP;
 	
 END;
 
-
+--Affichage de la commande
 
 -- Supression d'une commande
 DELETE FROM ORDERS
@@ -64,23 +68,22 @@ where id_order=seq_commande.CURRVAL();
 
 --Affichage des Stock
 
-CREATE PROCEDURE affichage_stock()
-DECLARE
-	name INGREDIENT.name%type;
+--PASSE AU COMPILATEUR, NON TESTEE AVEC DES DONNEES
+CREATE OR REPLACE PROCEDURE affichage_stock IS
+	nom INGREDIENT.name%type;
 	quantite PURCHASE.quantite_ingredient%type;
 	quantity INGREDIENT.quantity_label%type;
 	Cursor Curseur_stock IS
-		SELECT name, quantite_ingredient,quantity-label
-		FROM PURCHASE NATURAL JOIN INGREDIENT
+		SELECT nom, quantite_ingredient,quantity_label
+		FROM PURCHASE JOIN INGREDIENT ON PURCHASE.id_ingredient=INGREDIENT.id_ingredient;
 BEGIN
 	OPEN Curseur_stock;
 	LOOP
-		FETCH Curseur_stock INTO name,quantite,quantity;
-		EXIT WHEN monCurseur%NOTFOUND;
-		DBMS_OUTPUT.PUT_LINE('Ingrédient : ' || name || '  ' || quantite || '   ' || quantity );
+		FETCH Curseur_stock INTO nom,quantite,quantity;
+		EXIT WHEN Curseur_stock%NOTFOUND;
+		DBMS_OUTPUT.PUT_LINE('Ingrédient : ' || nom || '  ' || quantite || '   ' || quantity );
 	END LOOP;
-	DBMS_OUTPUT.PUT_LINE('Voici le nombre total de comédies : ' || monCurseur%rowCount);
-	CLOSE MonCurseur;
+	CLOSE Curseur_stock;
 END;
 
 --Réapprovisionnement d'un ingrédient
@@ -92,4 +95,11 @@ boolean ok;
 BEGIN
 	
 	
-	
+--Nettoyage
+
+DROP SEQUENCE seq_commande;
+DROP SEQUENCE seq_menuorder;
+DROP PROCEDURE affichage_stock;
+DROP PROCEDURE new_order;
+DROP PROCEDURE ajout_recette_order;
+DROP PROCEDURE ajout_menu_order;
