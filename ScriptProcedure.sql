@@ -1,5 +1,8 @@
---Utiliser dans le trigger monDeclancheur
 SET serveroutput ON;
+
+
+--Utiliser dans le trigger monDeclancheur
+
 create or replace procedure nonQuantité (toto number) is
 	quantite number;
 	nom varchar(30);
@@ -11,8 +14,10 @@ BEGIN
 	end if;
 END;
 /
+
+
 --Utiliser dans le trigger monDeclancheur
-SET serveroutput ON;
+
 create or replace procedure nonQuantité (toto number) is
 	quantite number:=0;
 	temp number;
@@ -33,3 +38,19 @@ BEGIN
 				then DBMS_OUTPUT.PUT_LINE('alert ! moins de 10 '|| nom);
 	end if;
 END;
+/
+
+
+-- This function calcul the total price for an order
+CREATE OR REPLACE FUNCTION facture (numCommande NUMBER)
+RETURN NUMBER IS
+	prixTotal NUMBER(5) := 0 ;
+BEGIN
+	SELECT (SUM(unit_price) +SUM(price_menu)) INTO prixTotal
+	FROM menu NATURAL JOIN menuOrder NATURAL JOIN recipeOrder NATURAL JOIN recipe
+	WHERE id_order=numCommande;
+	RETURN prixTotal;
+END;
+/
+
+
