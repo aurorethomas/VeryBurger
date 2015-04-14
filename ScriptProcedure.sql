@@ -1,5 +1,8 @@
---Utiliser dans le trigger monDeclancheur
 SET serveroutput ON;
+
+
+--Utiliser dans le trigger monDeclancheur
+
 create or replace procedure nonQuantité (toto number) is
 	quantite number;
 	nom varchar(30);
@@ -11,8 +14,10 @@ BEGIN
 	end if;
 END;
 /
+
+
 --Utiliser dans le trigger monDeclancheur
-SET serveroutput ON;
+
 create or replace procedure nonQuantité (toto number) is
 	quantite number:=0;
 	temp number;
@@ -33,3 +38,15 @@ BEGIN
 				then DBMS_OUTPUT.PUT_LINE('alert ! moins de 10 '|| nom);
 	end if;
 END;
+/
+
+
+-- Update the stock for one specific ingredient
+CREATE OR REPLACE PROCEDURE reapprovisionnement (numIngredient NUMBER, qteIngredient NUMBER) IS
+BEGIN
+	UPDATE purchase
+	SET quantite_ingredient = quantite_ingredient + qteIngredient
+	WHERE id_ingredient = numIngredient;
+END;
+
+

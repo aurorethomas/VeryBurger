@@ -72,7 +72,7 @@ CREATE TABLE PURCHASE
 	purchaseDate DATE,
 	throwDate DATE,
 	throw_user_id INTEGER,
-	purchasePrice INTEGER,
+	purchasePrice DOUBLE PRECISION,
 	available CHAR(1),
 	id_order INTEGER,
 	id_ingredient INTEGER,
