@@ -18,7 +18,7 @@ CREATE SEQUENCE seq_menuorder;
 -- utilisant la machine 
 
 
---PASSE AU COMPILATEUR, NON TESTEE AVEC DES DONNEES
+--PASSE AU COMPILATEUR,TESTEE AVEC DES DONNEES
 CREATE PROCEDURE new_order (utilisateur NUMBER) IS
 BEGIN
 	INSERT INTO ORDERS(id_order,id_user)
@@ -68,13 +68,13 @@ where id_order=seq_commande.CURRVAL();
 
 --Affichage des Stock
 
---PASSE AU COMPILATEUR, NON TESTEE AVEC DES DONNEES
+--PASSE AU COMPILATEUR, TESTEE AVEC DES DONNEES
 CREATE OR REPLACE PROCEDURE affichage_stock IS
 	nom INGREDIENT.name%type;
 	quantite PURCHASE.quantite_ingredient%type;
 	quantity INGREDIENT.quantity_label%type;
 	Cursor Curseur_stock IS
-		SELECT nom, quantite_ingredient,quantity_label
+		SELECT name, quantite_ingredient,quantity_label
 		FROM PURCHASE JOIN INGREDIENT ON PURCHASE.id_ingredient=INGREDIENT.id_ingredient;
 BEGIN
 	OPEN Curseur_stock;
