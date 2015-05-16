@@ -139,13 +139,15 @@ INSERT INTO users values(3, 'Philippe', 'Aleixo', 0);
 INSERT INTO users values(4, 'Laurence', 'Gandois', 0);
 ------------A NE PAS INSERER
 --orders
-/*
-INSERT INTO orders VALUES(0,0,);
-INSERT INTO orders VALUES(1,3,2);
-INSERT INTO orders VALUES(2,2,1);
-INSERT INTO orders VALUES(3,0,5);
-INSERT INTO orders VALUES(4,2,6);
 
+INSERT INTO orders VALUES(0,0,'01/04/15', '07/04/15');
+INSERT INTO orders VALUES(1,3,'05/04/15', '07/04/15');
+INSERT INTO orders VALUES(2,2,'07/04/15', '10/04/15');
+INSERT INTO orders VALUES(3,0,'15/04/15', '16/04/15');
+INSERT INTO orders VALUES(4,4,'17/04/15', '18/04/15');
+
+
+/*
 INSERT INTO purchase values(0, '10-1-2014', '25-12-2014', 2, 10, 'o', 1, 20, '10-5-2015');
 INSERT INTO purchase values(1, '1-5-2014', '25-12-2015', 0, 10, 'o', 1, 10, '5-10-2015');
 INSERT INTO purchase values(2, '15-7-2014', '2-12-2014', 3, 10, 'o', 4, 25, '10-3-2015');
