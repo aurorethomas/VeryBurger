@@ -6,28 +6,43 @@ CREATE SEQUENCE sequence_id_menuorders;
 
 -- Création d'une commande
 
-CREATE OR REPLACE PROCEDURE New_orders IS
+CREATE OR REPLACE FUNCTION Get_id_commande RETURN NUMBER IS
+id_commande_active NUMBER;
+BEGIN
+	id_commande_active:=sequence_id_orders.NEXTVAL;
+	RETURN id_commande_active;
+END;
+
+CREATE OR REPLACE Procedure New_orders(id_commande NUMBER)  IS
 BEGIN
 	INSERT INTO ORDERS(id_order,price_total)
-	VALUES (sequence_id_orders.NEXTVAL,0);
+	VALUES (id_commande,0);
 END;
 /
 
-CREATE OR REPLACE PROCEDURE Insert_order_date IS
-chiffre_sequence_id_orders NUMBER;
+CREATE OR REPLACE PROCEDURE Insert_order_date(id_commande NUMBER) IS
 BEGIN
-	chiffre_sequence_id_orders:=sequence_id_orders.CURRVAL;
 	UPDATE ORDERS 
 	SET order_date=CURRENT_DATE
-	WHERE id_order=chiffre_sequence_id_orders;
+	WHERE id_order=id_commande;
 COMMIT;
 END;
 /
 
-CREATE OR REPLACE PROCEDURE Nouvelle_commande IS
+
+CREATE OR REPLACE FUNCTION Nouvelle_commande RETURN NUMBER IS
+id_commande_A_recuperer NUMBER;
 BEGIN
-	New_orders();
-	Insert_order_date();
+	id_commande_A_recuperer :=Get_id_commande();
+	New_orders(id_commande_A_recuperer );
+	Insert_order_date(id_commande_A_recuperer);
+	RETURN id_commande_A_recuperer;
+END;
+
+DECLARE
+N NUMBER;
+BEGIN
+N:=Nouvelle_commande();
 END;
 /
 
