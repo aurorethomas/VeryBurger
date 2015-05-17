@@ -48,5 +48,24 @@ BEGIN
 	SET quantite_ingredient = quantite_ingredient + qteIngredient
 	WHERE id_ingredient = numIngredient;
 END;
+/
 
+-- Give all informations about an Employe
+CREATE OR REPLACE PROCEDURE infoEmploye (numEmploye NUMBER) IS
+	nameEmploye VARCHAR(30);
+	surnameEmploye VARCHAR(30);
+	positonEmploye VARCHAR(30);
+Cursor employe IS 
+        SELECT firstname_user, surname_user, label_position
+        FROM users NATURAL JOIN positions
+        WHERE id_user = numEmploye;
+BEGIN
+	OPEN employe;
+	LOOP
+		FETCH employe INTO nameEmploye, surnameEmploye, positonEmploye; 
+		EXIT WHEN employe%NOTFOUND;
+		DBMS_OUTPUT.PUT_LINE(' Name : '|| nameEmploye ||  ' ; '  ||' Surname : '|| surnameEmploye||  ' ; ' ||' Position : ' || positonEmploye ||' Orders taken : ' || nbrCommande(numEmploye));  
+	END LOOP;
+	Close employe;
+END;
 

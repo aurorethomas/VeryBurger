@@ -15,3 +15,18 @@ BEGIN
 	RETURN menuPrice + recipePrice;
 END;
 /
+
+--  Count the the total orders for an Employe
+CREATE OR REPLACE FUNCTION nbrCommande (numEmploye NUMBER)
+RETURN NUMBER IS
+	totalCommande NUMBER(5);
+BEGIN
+	SELECT SUM(id_order) INTO totalCommande
+	FROM orders
+	WHERE id_user = numEmploye;
+	RETURN totalCommande;
+END;
+/
+
+
+
