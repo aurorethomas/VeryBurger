@@ -174,16 +174,7 @@ BEGIN
 END;
 /*----------------------------------------------------------------*/
 /*----------------------------------------------------------------*/
-cursor coureurRecipeorder is 
-			select id_recipe from recipeorder where id_order=id_order_;
-open coureurRecipeorder;
-	loop
-	fetch coureurRecipeorder into id_temp;
-	exit when coureurRecipeorder %notfound;
-	select unit_price from recipeorder where id_ingredient=id_temp;
-	totalPrice:= totalPrice + price;
-	END loop;
-	close coureurRecipeorder;
+
 /*----------------------------------------------------------------*/
 
 
@@ -197,11 +188,110 @@ drop procedure new_menuorder;
 drop sequence sequence_id_recipe_order;
 drop procedure new_recipeorder;
 
+drop PROCEDURE price_order;
 /*----------------------------------------------------------------*/
 
-drop PROCEDURE price_order;
 
---Affichage d'une commande (numéro_commande + les plats qui l'a compose+ le nombre de plat+ le prix)
- --(pour celle la je vais décomposer les menus en plat)
---Affichage des infos sur une recette (ingrédient+ nombre_d_ingrédients+ éventuellement le prix)
---Consommation d'une recette (les ingrédients sont retirés dans les stock) TRIGGER
+
+-- Affiche les infos nécessaire à l'impression d'un ticket de caisse 
+CREATE OR REPLACE PROCEDURE infoCommande(numCommande NUMBER) IS
+	numMenu NUMBER;
+	nomMenu VARCHAR(30);
+	qte NUMBER;
+	nomRecette VARCHAR(30);
+	prix NUMBER;
+Cursor menuCommande IS 
+		select id_menu, name_menu  
+		from menuorder natural join menu
+		where id_order = numCommande;
+Cursor recetteCommande IS
+		select qte, name_recipe
+		from recipe natural join recipeorder
+		where id_order =numCommande;
+BEGIN
+	DBMS_OUTPUT.PUT_LINE('La commande numéro ' || numCommande || ' contient : ');
+	OPEN menuCommande;
+	LOOP
+		FETCH menuCommande INTO numMenu, nomMenu;
+		EXIT WHEN menuCommande%NOTFOUND;
+		DBMS_OUTPUT.PUT_LINE('Le menu : ' || nomMenu );
+		ContenuMenu(numMenu);  
+	END LOOP;
+	Close menuCommande;
+	DBMS_OUTPUT.PUT_LINE('La commande contient aussi des recettes hors menu : ' );
+	OPEN recetteCommande;
+	LOOP
+		FETCH recetteCommande INTO qte, nomRecette;
+		EXIT WHEN recetteCommande%NOTFOUND;
+		DBMS_OUTPUT.PUT_LINE( qte || ' ' || nomRecette );
+	END LOOP;
+	CLOSE recetteCommande;
+ 	price_order(numCommande);
+END;
+
+
+-- procedure qui affiche le contenu d'un menu ( qte + label)
+CREATE OR REPLACE PROCEDURE ContenuMenu(numMenu NUMBER) IS
+	qte NUMBER(5);
+	categorie VARCHAR(30);
+	Cursor infoMenu IS 
+		select quantity, label_type
+		from elementmenu natural join typerecipe 
+		where id_type = id_recipe_type and id_menu = numMenu;
+BEGIN
+	OPEN infoMenu;
+	LOOP 
+		FETCH infoMenu INTO qte, categorie;
+		EXIT WHEN infoMenu%NOTFOUND;
+		DBMS_OUTPUT.PUT_LINE(qte || ' ' || categorie);
+	END LOOP;
+	CLOSE infoMenu;
+END;
+
+-- Donne tous les ingredients et la quantité necessaire pour une recette ( ainsi que le prix de la recette )
+CREATE OR REPLACE PROCEDURE infoRecette(nomRecette STRING) IS
+	nomIngredient VARCHAR(30);
+	qte NUMBER;
+	prix NUMBER;
+Cursor maRecette IS 
+		select quantity_ingredientrecipe, name
+		from ingredient natural join ingredientrecipe natural join recipe
+		where name_recipe = nomRecette;
+BEGIN
+	DBMS_OUTPUT.PUT_LINE('Ingredient nécessaire à la fabrication de :  ' || nomRecette);
+	OPEN maRecette;
+	LOOP
+		FETCH maRecette INTO qte, nomIngredient;
+		EXIT WHEN maRecette%NOTFOUND;
+		DBMS_OUTPUT.PUT_LINE(qte || ' ' || nomIngredient); 
+	END LOOP;
+	Close maRecette;
+
+	select price INTO prix
+	from recipe
+	where name_recipe = nomRecette;
+	DBMS_OUTPUT.PUT_LINE('Cette recette est en vente au prix de : ' || prix || 'euros');
+END;
+
+
+--Consommation d'une recette (les ingrédients sont retirés dans les stock) 
+
+CREATE OR REPLACE PROCEDURE MAJstock (nomRecette STRING)IS
+	nomIngredient VARCHAR(30);
+	qte NUMBER;
+Cursor maRecette IS 
+		select quantity_ingredientrecipe, name
+		from ingredient natural join ingredientrecipe natural join recipe
+		where name_recipe = nomRecette;
+BEGIN
+	OPEN maRecette;
+	LOOP
+		FETCH maRecette INTO qte, nomIngredient;
+		EXIT WHEN maRecette%NOTFOUND;
+		UPDATE ingredient
+		SET quantity_ingredient = quantity_ingredient - qte
+		WHERE name = nomIngredient;
+	END LOOP;
+	Close maRecette;
+	DBMS_OUTPUT.PUT_LINE('Les stocks viennent d''être mis à jour' );
+END;

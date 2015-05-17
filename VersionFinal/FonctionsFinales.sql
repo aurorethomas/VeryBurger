@@ -11,6 +11,7 @@ BEGIN
 	INSERT INTO ORDERS(id_order,price_total)
 	VALUES (sequence_id_orders.NEXTVAL,0);
 END;
+/
 
 CREATE OR REPLACE PROCEDURE Insert_order_date IS
 chiffre_sequence_id_orders NUMBER;
@@ -21,12 +22,15 @@ BEGIN
 	WHERE id_order=chiffre_sequence_id_orders;
 COMMIT;
 END;
+/
 
 CREATE OR REPLACE PROCEDURE Nouvelle_commande IS
 BEGIN
 	New_orders();
 	Insert_order_date();
 END;
+/
+
 
 -- Ajout d'un menu dans une commande
 
@@ -54,6 +58,7 @@ BEGIN
 	WHERE id_order = id_commande;
 COMMIT;
 END;
+/
 
 -- Vue recette à faire
 CREATE VIEW VUE_AFFICHAGE_RECETTE_A_FAIRE (id_commande NUMBER) AS
@@ -82,7 +87,7 @@ EXCEPTION
 	WHEN id_menu_invalide THEN
 		DBMS_OUTPUT.PUT_LINE('Erreur');
 END;
-
+/
 -- Vérification 
 /*
 DECLARE
@@ -102,7 +107,7 @@ BEGIN
 	WHERE id_ingredient=id_ingredient_voulu;
 	RETURN quantite_en_stock>=quantite_voulu;
 END;
-
+/
 /*DECLARE
 B BOOLEAN;
 BEGIN
@@ -128,11 +133,55 @@ BEGIN
 		EXIT WHEN liste_ingredient%NOTFOUND;
 	END LOOP;
 END;
+/
 
 CREATE VIEW VUE_VERIF_RECETTE8STOCK IS
 	SELECT id_recipe 
 	FROM id_recipe 
 	WHERE Ingredient_recette_en_stock(id_recipe)=TRUE;
+/
 
+create or replace function calcul_prixcommande (id_commande integer) RETURN double precision IS
+  prixCommande double precision;
+  nbcommande integer;
+  idmenu integer;
+  prix double precision;
+  nbmenu integer;
+  commandeAbsente EXCEPTION;
+  
+  CURSOR Curseur_menuorder(id_commande integer)IS  -- Le curseur récupère les informations relatives à un acteur possédant le même nom que celui passé en paramètre. 
+    SELECT menuorder.id_menu, COUNT(menuorder.id_menu_order), menu.price_menu
+    FROM menuorder JOIN menu ON(menu.id_menu = menuorder.id_menu)
+    WHERE id_order = id_commande
+    GROUP BY menuorder.id_menu, menu.price_menu;
+    
+BEGIN
+  SELECT COUNT(*) INTO nbcommande
+  FROM orders 
+  WHERE id_order=id_commande;
+  
+  IF nbcommande!=1 THEN
+    RAISE commandeAbsente;   -- On lance une exception 
+  END IF;
+  
+  prixCommande := 0;
+  OPEN Curseur_menuorder(id_commande);
+    LOOP
+      FETCH Curseur_menuorder INTO idmenu, nbmenu, prix;
+      EXIT WHEN Curseur_menuorder%NOTFOUND;   
+      prixCommande := prixCommande + nbmenu * prix;
+    END LOOP;
+    CLOSE Curseur_menuorder;
+    
+    INSERT INTO orders(price_total) VALUES(prixCommande) WHERE orders.id_order = id_commande;
+    RETURN prixCommande;
+    
+  EXCEPTION  -- On traite les exceptions
+      WHEN  CommandeAbsente THEN
+        DBMS_OUTPUT.PUT_LINE('ERREUR: Aucune commande ne correspondau numéro '||id_commande);
+      WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erreur Inconnue');
+END;
+/
 
 
