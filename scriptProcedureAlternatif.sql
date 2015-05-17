@@ -197,15 +197,12 @@ drop procedure new_menuorder;
 drop sequence sequence_id_recipe_order;
 drop procedure new_recipeorder;
 
+drop PROCEDURE price_order;
 /*----------------------------------------------------------------*/
 
-drop PROCEDURE price_order;
 
---Affichage d'une commande (numéro_commande + les plats qui l'a compose+ le nombre de plat+ le prix)
- --(pour celle la je vais décomposer les menus en plat)
---Affichage des infos sur une recette (ingrédient+ nombre_d_ingrédients+ éventuellement le prix)
---Consommation d'une recette (les ingrédients sont retirés dans les stock) TRIGGER
 
+-- Affiche les infos nécessaire à l'impression d'un ticket de caisse 
 CREATE OR REPLACE PROCEDURE infoCommande(numCommande NUMBER) IS
 	numMenu NUMBER;
 	nomMenu VARCHAR(30);
@@ -259,3 +256,30 @@ BEGIN
 	END LOOP;
 	CLOSE infoMenu;
 END;
+
+-- Donne tous les ingredients et la quantité necessaire pour une recette ( ainsi que le prix de la recette )
+CREATE OR REPLACE PROCEDURE infoRecette(nomRecette STRING) IS
+	nomIngredient VARCHAR(30);
+	qte NUMBER;
+	prix NUMBER;
+Cursor maRecette IS 
+		select quantity_ingredientrecipe, name
+		from ingredient natural join ingredientrecipe natural join recipe
+		where name_recipe = nomRecette;
+BEGIN
+	DBMS_OUTPUT.PUT_LINE('Ingredient nécessaire à la fabrication de :  ' || nomRecette);
+	OPEN maRecette;
+	LOOP
+		FETCH maRecette INTO qte, nomIngredient;
+		EXIT WHEN maRecette%NOTFOUND;
+		DBMS_OUTPUT.PUT_LINE(qte || ' ' || nomIngredient); 
+	END LOOP;
+	Close maRecette;
+
+	select price INTO prix
+	from recipe
+	where name_recipe = nomRecette;
+	DBMS_OUTPUT.PUT_LINE('Cette recette est en vente au prix de : ' || prix || 'euros');
+END;
+
+--Consommation d'une recette (les ingrédients sont retirés dans les stock) TRIGGER
