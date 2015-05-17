@@ -282,4 +282,25 @@ BEGIN
 	DBMS_OUTPUT.PUT_LINE('Cette recette est en vente au prix de : ' || prix || 'euros');
 END;
 
---Consommation d'une recette (les ingrédients sont retirés dans les stock) TRIGGER
+
+--Consommation d'une recette (les ingrédients sont retirés dans les stock) 
+
+CREATE OR REPLACE PROCEDURE MAJstock (nomRecette STRING)IS
+	nomIngredient VARCHAR(30);
+	qte NUMBER;
+Cursor maRecette IS 
+		select quantity_ingredientrecipe, name
+		from ingredient natural join ingredientrecipe natural join recipe
+		where name_recipe = nomRecette;
+BEGIN
+	OPEN maRecette;
+	LOOP
+		FETCH maRecette INTO qte, nomIngredient;
+		EXIT WHEN maRecette%NOTFOUND;
+		UPDATE ingredient
+		SET quantity_ingredient = quantity_ingredient - qte
+		WHERE name = nomIngredient;
+	END LOOP;
+	Close maRecette;
+	DBMS_OUTPUT.PUT_LINE('Les stocks viennent d''être mis à jour' );
+END;
