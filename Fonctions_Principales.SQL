@@ -1,0 +1,2 @@
+-- Les fonctions principales sont les fonctions qui seront appelées en permanence par l'application
+-- Elles feront probablement toutes appel aux fonctions du fichier "Fonctions.sql"
