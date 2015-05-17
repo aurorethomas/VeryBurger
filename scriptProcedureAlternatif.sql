@@ -205,3 +205,57 @@ drop PROCEDURE price_order;
  --(pour celle la je vais décomposer les menus en plat)
 --Affichage des infos sur une recette (ingrédient+ nombre_d_ingrédients+ éventuellement le prix)
 --Consommation d'une recette (les ingrédients sont retirés dans les stock) TRIGGER
+
+CREATE OR REPLACE PROCEDURE infoCommande(numCommande NUMBER) IS
+	numMenu NUMBER;
+	nomMenu VARCHAR(30);
+	qte NUMBER;
+	nomRecette VARCHAR(30);
+	prix NUMBER;
+Cursor menuCommande IS 
+		select id_menu, name_menu  
+		from menuorder natural join menu
+		where id_order = numCommande;
+Cursor recetteCommande IS
+		select qte, name_recipe
+		from recipe natural join recipeorder
+		where id_order =numCommande;
+BEGIN
+	DBMS_OUTPUT.PUT_LINE('La commande numéro ' || numCommande || ' contient : ');
+	OPEN menuCommande;
+	LOOP
+		FETCH menuCommande INTO numMenu, nomMenu;
+		EXIT WHEN menuCommande%NOTFOUND;
+		DBMS_OUTPUT.PUT_LINE('Le menu : ' || nomMenu );
+		ContenuMenu(numMenu);  
+	END LOOP;
+	Close menuCommande;
+	DBMS_OUTPUT.PUT_LINE('La commande contient aussi des recettes hors menu : ' );
+	OPEN recetteCommande;
+	LOOP
+		FETCH recetteCommande INTO qte, nomRecette;
+		EXIT WHEN recetteCommande%NOTFOUND;
+		DBMS_OUTPUT.PUT_LINE( qte || ' ' || nomRecette );
+	END LOOP;
+	CLOSE recetteCommande;
+ 	price_order(numCommande);
+END;
+
+
+-- procedure qui affiche le contenu d'un menu ( qte + label)
+CREATE OR REPLACE PROCEDURE ContenuMenu(numMenu NUMBER) IS
+	qte NUMBER(5);
+	categorie VARCHAR(30);
+	Cursor infoMenu IS 
+		select quantity, label_type
+		from elementmenu natural join typerecipe 
+		where id_type = id_recipe_type and id_menu = numMenu;
+BEGIN
+	OPEN infoMenu;
+	LOOP 
+		FETCH infoMenu INTO qte, categorie;
+		EXIT WHEN infoMenu%NOTFOUND;
+		DBMS_OUTPUT.PUT_LINE(qte || ' ' || categorie);
+	END LOOP;
+	CLOSE infoMenu;
+END;
