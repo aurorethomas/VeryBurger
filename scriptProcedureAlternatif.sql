@@ -66,6 +66,24 @@ BEGIN
 END;
 
 
+-- Informations sur tous les employés
+CREATE OR REPLACE PROCEDURE infoAllEmploye IS
+	nameEmploye VARCHAR(30);
+	surnameEmploye VARCHAR(30);
+	positionEmploye VARCHAR(30);
+Cursor employe IS 
+        SELECT firstname_user, surname_user, label_position
+        FROM users NATURAL JOIN positions
+        WHERE id_position = position;
+BEGIN
+	OPEN employe;
+	LOOP
+		FETCH employe INTO nameEmploye, surnameEmploye, positionEmploye; 
+		EXIT WHEN employe%NOTFOUND;
+		DBMS_OUTPUT.PUT_LINE(' Name : '|| nameEmploye ||  ' ; '  ||' Surname : '|| surnameEmploye||  ' ; ' ||' Position : ' || positionEmploye);  
+	END LOOP;
+	Close employe;
+END;
 
 
 
@@ -75,6 +93,11 @@ BEGIN
 	infoEmploye(2);
 END;
 
+-- test procédure infoAllEmploye
+DECLARE
+BEGIN
+	infoAllEmploye();
+END;
 
 
 /*----------------------------------------------------------------*/
