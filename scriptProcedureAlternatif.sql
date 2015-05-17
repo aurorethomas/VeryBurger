@@ -53,6 +53,28 @@ BEGIN
 	VALUES (id_recette, quantite_recette);
 END;
 
+-- Information sur un employé
+CREATE OR REPLACE PROCEDURE infoEmploye (numEmploye NUMBER)IS
+	nameEmploye VARCHAR(30);
+	surnameEmploye VARCHAR(30);
+	positionEmploye VARCHAR(30);
+BEGIN
+    SELECT firstname_user, surname_user, label_position INTO nameEmploye, surnameEmploye, positionEmploye
+    FROM users NATURAL JOIN positions
+    WHERE id_user = numEmploye and id_position = position;
+		DBMS_OUTPUT.PUT_LINE(' Name : '|| nameEmploye ||  ' ; '  ||' Surname : '|| surnameEmploye||  ' ; ' ||' Position : ' || positionEmploye); 
+END;
+
+
+
+
+
+-- test procédure infoEmploye
+DECLARE
+BEGIN
+	infoEmploye(2);
+END;
+
 
 
 /*----------------------------------------------------------------*/
