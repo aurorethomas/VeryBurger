@@ -174,16 +174,7 @@ BEGIN
 END;
 /*----------------------------------------------------------------*/
 /*----------------------------------------------------------------*/
-cursor coureurRecipeorder is 
-			select id_recipe from recipeorder where id_order=id_order_;
-open coureurRecipeorder;
-	loop
-	fetch coureurRecipeorder into id_temp;
-	exit when coureurRecipeorder %notfound;
-	select unit_price from recipeorder where id_ingredient=id_temp;
-	totalPrice:= totalPrice + price;
-	END loop;
-	close coureurRecipeorder;
+
 /*----------------------------------------------------------------*/
 
 
