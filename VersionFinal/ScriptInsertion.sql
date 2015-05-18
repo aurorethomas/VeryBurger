@@ -1,0 +1,153 @@
+-- CREE PAR RADU	
+	
+-- Ingredient
+INSERT INTO INGREDIENT
+VALUES (1, 'tomate', 'kilo', 50);
+INSERT INTO INGREDIENT
+VALUES (2, 'steak', 'unite', 50);
+INSERT INTO INGREDIENT
+VALUES (3, 'salade', 'kilo', 50);
+INSERT INTO INGREDIENT
+VALUES (4, 'fromage', 'kilo', 50);
+INSERT INTO INGREDIENT
+VALUES (5, 'pomme de terre', 'kilo', 50);
+INSERT INTO INGREDIENT
+VALUES (6, 'poulet', 'kilo', 50);
+INSERT INTO INGREDIENT
+VALUES (7, 'pain', 'unite', 50);
+INSERT INTO INGREDIENT
+VALUES (8, 'frite', 'kilo', 50);
+INSERT INTO INGREDIENT
+VALUES (9, 'fanta', 'unite', 50);
+INSERT INTO INGREDIENT
+VALUES (10, 'Coca-cola', 'unite', 50);
+INSERT INTO INGREDIENT
+VALUES (11, 'pepsi', 'unite', 50);
+
+-- Recipe
+INSERT INTO RECIPE
+VALUES (1, 'hamburger1');
+INSERT INTO RECIPE
+VALUES (2, 'hamburger2');
+INSERT INTO RECIPE
+VALUES (3, 'hamburger3');
+INSERT INTO RECIPE
+VALUES (4, 'frite');
+INSERT INTO RECIPE
+VALUES (5, 'potatoes');
+INSERT INTO RECIPE
+VALUES (6, 'fanta');
+INSERT INTO RECIPE
+VALUES (7, 'Coca-cola');
+INSERT INTO RECIPE
+VALUES (8, 'Pepsi');
+
+------IngredientRecipe--------
+
+-- Uniquement  pour l'hamburger1 ()
+INSERT INTO INGREDIENTRECIPE
+VALUES (1,1,0.1);
+INSERT INTO INGREDIENTRECIPE
+VALUES (2,1,1);
+INSERT INTO INGREDIENTRECIPE
+VALUES (3,1,0.2);
+INSERT INTO INGREDIENTRECIPE
+VALUES (4,1,0.2);
+INSERT INTO INGREDIENTRECIPE
+VALUES (7,1,1);
+
+-- Uniquement  pour l'hamburger2
+INSERT INTO INGREDIENTRECIPE
+VALUES (1,2,0.2);
+INSERT INTO INGREDIENTRECIPE
+VALUES (2,2,1);
+INSERT INTO INGREDIENTRECIPE
+VALUES (3,2,0.2);
+INSERT INTO INGREDIENTRECIPE
+VALUES (4,2,0.2);
+INSERT INTO INGREDIENTRECIPE
+VALUES (6,2,0.2);
+INSERT INTO INGREDIENTRECIPE
+VALUES (7,2,1);
+
+-- Uniquement  pour l'hamburger3
+INSERT INTO INGREDIENTRECIPE
+VALUES (1,3,0.2);
+INSERT INTO INGREDIENTRECIPE
+VALUES (3,3,0.2);
+INSERT INTO INGREDIENTRECIPE
+VALUES (2,3,1);
+INSERT INTO INGREDIENTRECIPE
+VALUES (7,3,2);
+
+-- des frites 
+INSERT INTO INGREDIENTRECIPE
+VALUES(8,4,0.3);
+
+-- des potatoes
+INSERT INTO INGREDIENTRECIPE
+VALUES (8,5,0.3);
+
+--boisson
+INSERT INTO INGREDIENTRECIPE
+VALUES (9,6,1);
+INSERT INTO INGREDIENTRECIPE
+VALUES (10,7,1);
+INSERT INTO INGREDIENTRECIPE
+VALUES (11,8,1);
+-----fin INGREDIENTRECIPE-------------
+
+-- positions
+INSERT INTO positions
+VALUES (0,'employé') ;
+INSERT INTO positions
+VALUES (1,'responsable');
+INSERT INTO positions
+VALUES (2,'directeur');
+
+-- users
+INSERT INTO users values(0, 'Radu', 'Catalin', 0);
+INSERT INTO users values(1, 'Adrian', 'bigAdrian', 2);
+INSERT INTO users values(2, 'Luca', 'Rosaz', 1);
+INSERT INTO users values(3, 'Philippe', 'Aleixo', 0);
+INSERT INTO users values(4, 'Laurence', 'Gandois', 0);
+
+--Menu
+INSERT INTO MENU 
+VALUES (0,'Le starter', 12);
+INSERT INTO MENU 
+VALUES (1,'Le burger', 13);
+INSERT INTO MENU 
+VALUES (2,'La frite', 5);
+INSERT INTO MENU 
+VALUES (3,'Big burger', 15);
+INSERT INTO MENU 
+VALUES (4,'Menu salade', 7);
+
+-- elementmenu
+INSERT INTO elementmenu
+VALUES (1,1,1);
+INSERT INTO elementmenu
+VALUES (4,1,1);
+INSERT INTO elementmenu
+VALUES (8,1,1);
+INSERT INTO elementmenu
+VALUES (2,0,1);
+INSERT INTO elementmenu
+VALUES (4,0,1);
+INSERT INTO elementmenu
+VALUES (7,0,1);
+
+INSERT INTO elementmenu
+VALUES (3,3,1);
+INSERT INTO elementmenu
+VALUES (5,3,1);
+INSERT INTO elementmenu
+VALUES (6,3,1);
+
+INSERT INTO elementmenu
+VALUES (5,4,1);
+INSERT INTO elementmenu
+VALUES (4,0,1);
+INSERT INTO elementmenu
+VALUES (7,0,1);
